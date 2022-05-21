@@ -1,7 +1,7 @@
 import base64
-from email import errors
 from GoogleAuthenticator import authenticator
 from email.mime.text import MIMEText
+from googleapiclient.errors import HttpError
 
 CLIENT_SECRET_FILE = 'DocGoogle/credentials.json'
 API_NAME = 'gmail'
@@ -14,10 +14,10 @@ message = MIMEText('Python Mail test using API Google')
 message['from'] = "your_email@gmail.com"
 message['to'] = 'recipient@gmail.com'
 message['subject'] = 'API Google'
-raw_string = base64.urlsafe_b64encode(message.as_string())
+raw_string = base64.urlsafe_b64encode(message.as_bytes()).decode()
 
 try:
     message = service.users().messages().send(userId='me', body={'raw': raw_string}).execute()
     print ('Message Id: {}').format(message['id'])
-except errors.HttpError as error:
+except HttpError as error:
      print ('An error occurred: {}').format(error)

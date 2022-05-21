@@ -14,9 +14,9 @@ def authenticator(client_secret_file, api_service_name, api_version, *scopes):
 
     creds = None
 
-    if os.path.exists('token.json'):
+    if os.path.exists('DocGoogle/token.json'):
         creds = Credentials.from_authorized_user_file(
-            'token.json', SCOPES)
+            'DocGoogle/token.json', SCOPES)
     
     if not creds or not creds.valid:
         if creds and creds.expired and creds.refresh_token:
@@ -26,7 +26,7 @@ def authenticator(client_secret_file, api_service_name, api_version, *scopes):
                 CLIENT_SECRET_FILE, SCOPES)
             creds = flow.run_local_server(port=0)
         # Save the credentials for the next run
-        with open('token.json', 'w') as token:
+        with open('DocGoogle/token.json', 'w') as token:
             token.write(creds.to_json())
 
     try:
